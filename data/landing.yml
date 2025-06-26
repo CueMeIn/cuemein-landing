@@ -1,0 +1,58 @@
+features:
+  - title: "Neurodiversity-Informed Learning"
+    description: "AI-powered training programs designed specifically for neurodivergent learning styles and workplace needs."
+    icon: "🧠"
+  - title: "Social Skills Development"
+    description: "Evidence-based social interaction training for workplace communication and professional relationships."
+    icon: "🤝"
+  - title: "Government Standard Alignment"
+    description: "Curriculum aligned with government accessibility standards and workplace inclusion frameworks."
+    icon: "📋"
+  - title: "Personalized Support"
+    description: "Individualized coaching and feedback tailored to each learner's strengths and challenges."
+    icon: "💡"
+
+skill_paths:
+  - category: "Workplace Communication"
+    skills:
+      - "Professional Email Writing"
+      - "Meeting Participation"
+      - "Requesting Accommodations"
+      - "Conflict Resolution"
+      - "Active Listening Techniques"
+  - category: "Social Navigation"
+    skills:
+      - "Reading Social Cues"
+      - "Small Talk & Networking"
+      - "Workplace Etiquette"
+      - "Building Professional Relationships"
+      - "Managing Sensory Overload"
+  - category: "Executive Function"
+    skills:
+      - "Time Management"
+      - "Task Prioritization"
+      - "Organization Systems"
+      - "Self-Advocacy"
+      - "Stress Management"
+
+testimonials:
+  - name: "Miss Ho"
+    role: "Special Educator"
+    content: "CueMeIn is a web/app created by someone who has long observed children's needs from a parent's perspective, with first-hand experience and a genuine understanding of what ASD children truly need. I am more confident than anyone that the programs and services contain genuine authenticity."
+    rating: 5
+  - name: "C.C."
+    role: "Program Participant"
+    content: "I use the prototype daily and am learning how to start conversations and interact with colleagues in my workplace. The fact that it reflects vocational education content designed and approved by the Australian government makes it realistic and helps reduce unnecessary misunderstandings that can occur in the workplace."
+    rating: 5
+  - name: "E.C."
+    role: "Job Readiness Trainee"
+    content: "I'm currently learning job readiness training. While hard skills can be built through certifications or experience, soft skills like customer service and social skills are different. They're learned through interpersonal relationships and interactions with friends, which can be challenging for people with ASD. But CueMeIn's scenarios are realistic yet safe for practicing with AI, and the constructive feedback makes it exceptional."
+    rating: 5
+
+stats:
+  - value: "85%"
+    label: "Job Retention Rate"
+  - value: "92%"
+    label: "Confidence Improvement"
+  - value: "200+"
+    label: "Workplace Skills Covered"

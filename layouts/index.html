@@ -1,0 +1,117 @@
+{{ define "main" }}
+{{ $landing := .Site.Data.landing }}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text fade-in-up">
+                <div class="coming-soon">Coming Soon</div>
+                <h1>Designed for neurodivergent thinkers preparing for work — not just jobs, but belonging.</h1>
+                <p>Interactive, AI-supported learning for social and professional workplace skills, optimized with Government Standard frameworks</p>
+                <div style="display: flex; gap: 20px; margin-top: 30px;">
+                    <a href="#features" class="button">Learn More</a>
+                    <a href="#newsletter" class="button button-outline">Get Notified</a>
+                </div>
+            </div>
+            <div class="hero-animation fade-in-up">
+                {{ partial "animated-character.html" . }}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Choose CueMeIn?</h2>
+            <p>Evidence-based features designed for neurodivergent success in the workplace</p>
+        </div>
+        <div class="features-grid">
+            {{ range $landing.features }}
+            <div class="feature-card">
+                <div class="feature-icon">{{ .icon }}</div>
+                <h3>{{ .title }}</h3>
+                <p>{{ .description }}</p>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- Skill Paths Section -->
+<section class="skill-paths">
+    <div class="container">
+        <div class="section-header">
+            <h2>Professional Skills Training</h2>
+            <p>Structured learning paths for workplace readiness</p>
+        </div>
+        <div class="skill-paths-grid">
+            {{ range $landing.skill_paths }}
+            <div class="skill-path-card">
+                <h3>{{ .category }}</h3>
+                <ul class="skills-list">
+                    {{ range .skills }}
+                    <li>{{ . }}</li>
+                    {{ end }}
+                </ul>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            {{ range $landing.stats }}
+            <div class="stat-item">
+                <h3>{{ .value }}</h3>
+                <p>{{ .label }}</p>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <div class="container">
+        <div class="section-header">
+            <h2>Success Stories</h2>
+            <p>Real experiences from our community</p>
+        </div>
+        <div class="testimonials-grid">
+            {{ range $landing.testimonials }}
+            <div class="testimonial-card">
+                <p>{{ .content }}</p>
+                <div class="testimonial-author">
+                    <h4>{{ .name }}</h4>
+                    <p class="testimonial-role">{{ .role }}</p>
+                    <div class="testimonial-rating">
+                        {{ range seq .rating }}★{{ end }}{{ range seq (sub 5 .rating) }}☆{{ end }}
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section id="newsletter" class="cta">
+    <div class="container">
+        <h2>Launching Soon!</h2>
+        <p>Be the first to know about CueMeIn's launch and early access opportunities</p>
+        <form class="newsletter-form" action="#" method="post">
+            <div style="display: flex; max-width: 400px; margin: 0 auto; gap: 10px;">
+                <input type="email" placeholder="Enter your email address" required style="flex: 1; padding: 15px; border: none; border-radius: 8px; font-size: 16px;">
+                <button type="submit" class="button" style="background: white; color: #4A90E2; white-space: nowrap;">Notify Me</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+{{ end }}

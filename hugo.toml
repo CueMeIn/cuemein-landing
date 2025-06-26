@@ -1,0 +1,15 @@
+baseURL = 'https://cuemein.app'
+languageCode = 'en-us'
+title = 'CueMeIn - Workplace Skills for Neurodivergent Professionals'
+
+[params]
+  description = "Interactive, AI-supported learning for social and professional workplace skills, designed for neurodivergent thinkers"
+  author = "CueMeIn"
+  
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.render]
+      unsafe = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
