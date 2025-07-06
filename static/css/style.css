@@ -1,3 +1,9 @@
+/* 🎨 CueMeIn ASD-friendly Color System & Typography */
+/* Figma Stitch Design inspired green theme */
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap');
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -6,10 +12,11 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Work Sans', 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
-  color: #333;
+  color: #131711;
   overflow-x: hidden;
+  background-color: #ffffff;
 }
 
 .container {
@@ -41,14 +48,14 @@ header {
   gap: 12px;
   font-size: 24px;
   font-weight: 700;
-  color: #4A90E2;
+  color: #6f8764;
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .logo:hover {
   transform: translateY(-2px);
-  color: #357ABD;
+  color: #131711;
 }
 
 .logo-image {
@@ -68,10 +75,10 @@ header {
 }
 
 .logo-text {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-weight: 700;
   font-size: 24px;
-  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  background: linear-gradient(135deg, #6f8764 0%, #131711 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -80,7 +87,7 @@ header {
 
 /* Hero section */
 .hero {
-  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  background: linear-gradient(135deg, #6f8764 0%, #131711 100%);
   color: white;
   padding: 160px 0 80px;
   min-height: 100vh;
@@ -142,12 +149,13 @@ header {
   display: inline-block;
   padding: 15px 30px;
   background-color: #ffffff;
-  color: #4A90E2;
+  color: #6f8764;
   text-decoration: none;
   border-radius: 8px;
   font-weight: 600;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .button:hover {
@@ -163,7 +171,7 @@ header {
 
 .button-outline:hover {
   background-color: white;
-  color: #4A90E2;
+  color: #6f8764;
 }
 
 /* Section styles */
@@ -178,16 +186,18 @@ section {
 
 .section-header h2 {
   font-size: 36px;
-  color: #1e293b;
+  color: #131711;
   margin-bottom: 16px;
   font-weight: 700;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .section-header p {
   font-size: 18px;
-  color: #64748b;
+  color: #6f8764;
   max-width: 600px;
   margin: 0 auto;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 /* Features grid */
@@ -386,19 +396,19 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, rgba(240, 244, 255, 0.8) 0%, rgba(248, 250, 255, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(242, 244, 240, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
   border-radius: 50%;
   backdrop-filter: blur(20px);
   transition: all 0.4s ease;
   cursor: pointer;
-  filter: drop-shadow(0 12px 40px rgba(74, 144, 226, 0.2));
+  filter: drop-shadow(0 12px 40px rgba(111, 135, 100, 0.2));
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .communication-3d-container:hover {
   transform: scale(1.05) translateY(-5px);
-  filter: drop-shadow(0 20px 60px rgba(74, 144, 226, 0.3));
-  background: linear-gradient(135deg, rgba(240, 244, 255, 0.9) 0%, rgba(248, 250, 255, 1) 100%);
+  filter: drop-shadow(0 20px 60px rgba(111, 135, 100, 0.3));
+  background: linear-gradient(135deg, rgba(242, 244, 240, 0.9) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
 .communication-3d-canvas {
@@ -414,7 +424,7 @@ section {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: #4A90E2;
+  color: #6f8764;
   z-index: 10;
   background: rgba(255, 255, 255, 0.9);
   padding: 20px;
@@ -426,8 +436,8 @@ section {
 .loading-spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(74, 144, 226, 0.2);
-  border-top: 4px solid #4A90E2;
+  border: 4px solid rgba(111, 135, 100, 0.2);
+  border-top: 4px solid #6f8764;
   border-radius: 50%;
   animation: premium-spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   margin: 0 auto 15px;
@@ -436,21 +446,21 @@ section {
 @keyframes premium-spin {
   0% { 
     transform: rotate(0deg);
-    border-top-color: #4A90E2;
+    border-top-color: #6f8764;
   }
   25% { 
-    border-top-color: #E74C3C;
+    border-top-color: #a0845c;
   }
   50% { 
     transform: rotate(180deg);
-    border-top-color: #27AE60;
+    border-top-color: #6f8764;
   }
   75% { 
-    border-top-color: #F39C12;
+    border-top-color: #8b6f47;
   }
   100% { 
     transform: rotate(360deg);
-    border-top-color: #4A90E2;
+    border-top-color: #6f8764;
   }
 }
 
@@ -458,7 +468,8 @@ section {
   font-size: 14px;
   font-weight: 600;
   margin: 0;
-  color: #4A90E2;
+  color: #6f8764;
+  font-family: 'Work Sans', sans-serif;
 }
 
 /* Hide loading when 3D model is loaded */
@@ -477,7 +488,7 @@ section {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, #4A90E2, #E74C3C, #27AE60, #F39C12);
+  background: linear-gradient(45deg, #6f8764, #a0845c, #8b6f47, #131711);
   border-radius: 50%;
   z-index: -1;
   opacity: 0;

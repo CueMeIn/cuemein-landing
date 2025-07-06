@@ -1,0 +1,24 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer cube frame -->
+  <g transform="translate(4, 4)">
+    <!-- Front face -->
+    <path d="M2 8 L10 4 L18 8 L10 12 Z" fill="#4A90E2" opacity="0.9"/>
+    <!-- Top face -->
+    <path d="M10 4 L18 8 L18 16 L10 12 Z" fill="#357ABD" opacity="0.8"/>
+    <!-- Right face -->
+    <path d="M10 12 L18 16 L10 20 L2 16 Z" fill="#2E5A8A" opacity="0.7"/>
+    
+    <!-- Inner cube -->
+    <path d="M6 10 L10 8 L14 10 L10 12 Z" fill="#6BB6FF" opacity="0.9"/>
+    <path d="M10 8 L14 10 L14 14 L10 12 Z" fill="#5DADE6" opacity="0.8"/>
+    <path d="M10 12 L14 14 L10 16 L6 14 Z" fill="#4F9FCC" opacity="0.7"/>
+    
+    <!-- Connection lines -->
+    <line x1="2" y1="8" x2="6" y2="10" stroke="#4A90E2" stroke-width="0.5" opacity="0.6"/>
+    <line x1="18" y1="8" x2="14" y2="10" stroke="#4A90E2" stroke-width="0.5" opacity="0.6"/>
+    <line x1="10" y1="4" x2="10" y2="8" stroke="#4A90E2" stroke-width="0.5" opacity="0.6"/>
+    
+    <!-- Small dot for accent -->
+    <circle cx="10" cy="10" r="1" fill="#FFD700" opacity="0.8"/>
+  </g>
+</svg>
