@@ -105,9 +105,13 @@
     <div class="container">
         <h2>Launching Soon!</h2>
         <p>Be the first to know about CueMeIn's launch and early access opportunities</p>
-        <form class="newsletter-form" action="#" method="post">
+        <form class="newsletter-form" name="early-access" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
+            <input type="hidden" name="form-name" value="early-access" />
+            <p class="hidden" style="display: none;">
+                <label>Don't fill this out: <input name="bot-field" /></label>
+            </p>
             <div style="display: flex; max-width: 400px; margin: 0 auto; gap: 10px;">
-                <input type="email" placeholder="Enter your email address" required style="flex: 1; padding: 15px; border: none; border-radius: 8px; font-size: 16px;">
+                <input type="email" name="email" placeholder="Enter your email address" required style="flex: 1; padding: 15px; border: none; border-radius: 8px; font-size: 16px;">
                 <button type="submit" class="button" style="background: white; color: #4A90E2; white-space: nowrap;">Notify Me</button>
             </div>
         </form>

@@ -1,0 +1,124 @@
+{{ define "main" }}
+<section class="thank-you-page">
+    <div class="container">
+        <div class="thank-you-content">
+            <div class="thank-you-header">
+                <h1>🎉 You're In!</h1>
+                <p class="lead">Thank you for joining the CueMeIn early access list!</p>
+            </div>
+            
+            <div class="next-steps">
+                <h2>What happens next:</h2>
+                <ul class="steps-list">
+                    <li>✅ Check your email for a welcome message</li>
+                    <li>🚀 Beta testing invitation (coming in 4-6 weeks)</li>
+                    <li>📧 Regular development updates</li>
+                    <li>🎁 Early access to workplace scenarios</li>
+                </ul>
+            </div>
+            
+            <div class="follow-journey">
+                <h2>Meanwhile, follow our journey:</h2>
+                <ul class="social-list">
+                    <li>📱 Instagram: @cuemein_app (Coming Soon)</li>
+                    <li>🌐 Development blog: Regular updates via email</li>
+                    <li>🤝 Community discussions: Exclusive access for early adopters</li>
+                </ul>
+            </div>
+            
+            <div class="brand-message">
+                <h2>Building workplace confidence for neurodivergent minds ✨</h2>
+                <p class="tagline">Different operating system, unlimited potential</p>
+            </div>
+            
+            <div class="back-link">
+                <a href="/" class="button">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.thank-you-page {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    min-height: 70vh;
+}
+
+.thank-you-content {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.thank-you-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.lead {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.next-steps, .follow-journey {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    backdrop-filter: blur(10px);
+}
+
+.steps-list, .social-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.steps-list li, .social-list li {
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.brand-message {
+    margin: 3rem 0;
+}
+
+.tagline {
+    font-style: italic;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+}
+
+.back-link {
+    margin-top: 2rem;
+}
+
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: white;
+    color: #667eea;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .thank-you-header h1 {
+        font-size: 2rem;
+    }
+    
+    .next-steps, .follow-journey {
+        padding: 1.5rem;
+    }
+}
+</style>
+{{ end }}
