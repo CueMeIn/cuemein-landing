@@ -1,7 +1,10 @@
 // api/submit-form.js - Vercel Serverless Function
-import { Resend } from "resend";
+const { Resend } = require("resend");
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
+  // Ensure JSON response
+  res.setHeader("Content-Type", "application/json");
+
   // Form submission received log
   console.log("Form submission received:", {
     method: req.method,
@@ -180,4 +183,4 @@ export default async function handler(req, res) {
       error: "Failed to process your request. Please try again.",
     });
   }
-}
+};
