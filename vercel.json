@@ -3,5 +3,10 @@
     "env": {
       "HUGO_VERSION": "0.128.0"
     }
+  },
+  "functions": {
+    "api/submit-form.js": {
+      "runtime": "nodejs18.x"
+    }
   }
 }

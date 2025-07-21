@@ -1,27 +1,27 @@
-// api/submit-form.js - Node.js 18+ 호환 개선 버전
+// api/submit-form.js - Vercel Serverless Function
 import { Resend } from "resend";
 
 export default async function handler(req, res) {
-  // 폼 제출 수신 로그
-  console.log("폼 제출 수신:", {
+  // Form submission received log
+  console.log("Form submission received:", {
     method: req.method,
     hasApiKey: !!process.env.RESEND_API_KEY,
     bodyKeys: Object.keys(req.body || {}),
     userAgent: req.headers["user-agent"],
   });
 
-  // CORS 헤더 설정
+  // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // OPTIONS 요청 처리 (preflight)
+  // Handle OPTIONS request (preflight)
   if (req.method === "OPTIONS") {
     console.log("OPTIONS request handled");
     return res.status(200).end();
   }
 
-  // POST 요청만 허용
+  // Only allow POST requests
   if (req.method !== "POST") {
     console.log("Method not allowed:", req.method);
     return res.status(405).json({
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 환경 변수 확인
+    // Check environment variables
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       console.error(
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     }
     console.log("API key found, length:", apiKey.length);
 
-    // 요청 데이터 파싱 및 검증
+    // Parse and validate request data
     const { email, name, message, honeypot } = req.body || {};
     console.log("Parsed request data:", {
       hasEmail: !!email,
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       honeypotValue: honeypot,
     });
 
-    // 입력 검증
+    // Input validation
     if (!email || !email.includes("@")) {
       console.log("Invalid email provided:", email);
       return res.status(400).json({
@@ -69,8 +69,8 @@ export default async function handler(req, res) {
       });
     }
 
-    // 스팸 방지 (honeypot 체크)
-    if (req.body.website) {
+    // Spam prevention (honeypot check)
+    if (honeypot) {
       console.log("Spam attempt blocked (honeypot triggered)");
       return res.status(200).json({
         success: true,
@@ -78,11 +78,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // Resend 초기화 시도
-    console.log("Initializing Resend client...");
+    // Initialise Resend client
+    console.log("Initialising Resend client...");
     const resend = new Resend(apiKey);
 
-    // 이메일 데이터 준비
+    // Prepare email data
     const emailData = {
       from: "CueMeIn Beta <noreply@cuemein.app>",
       to: ["beta@cuemein.com.au"],
@@ -132,7 +132,7 @@ export default async function handler(req, res) {
       subject: emailData.subject,
     });
 
-    // 이메일 발송 시도
+    // Attempt to send email
     const emailResult = await resend.emails.send(emailData);
 
     console.log("Email sent successfully:", {
@@ -144,14 +144,14 @@ export default async function handler(req, res) {
       throw new Error(`Resend API error: ${JSON.stringify(emailResult.error)}`);
     }
 
-    // 성공 응답
+    // Success response
     return res.status(200).json({
       success: true,
-      message: "감사합니다! 곧 연락드리겠습니다. 🎉",
+      message: "Thank you! We'll be in touch soon. 🎉",
       emailId: emailResult.data?.id,
     });
   } catch (error) {
-    // 상세한 에러 로깅
+    // Detailed error logging
     console.error("Email sending failed with detailed error:", {
       message: error.message,
       name: error.name,
@@ -159,7 +159,7 @@ export default async function handler(req, res) {
       cause: error.cause,
     });
 
-    // 특정 에러 타입별 처리
+    // Specific error type handling
     if (error.message.includes("API key")) {
       return res.status(500).json({
         success: false,
@@ -174,7 +174,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // 일반적인 서버 에러
+    // General server error
     return res.status(500).json({
       success: false,
       error: "Failed to process your request. Please try again.",
