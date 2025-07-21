@@ -185,151 +185,167 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    var form = document.getElementById("beta-signup-form");
-    var submitBtn = document.getElementById("submit-btn");
-    var btnText = document.getElementById("btn-text");
-    var btnLoading = document.getElementById("btn-loading");
-    var messageDiv = document.getElementById("form-message");
-    var charCount = document.getElementById("char-count");
-    var messageField = document.getElementById("message");
+    const form = document.getElementById("beta-signup-form");
+    if (!form) {
+      console.error("Beta form not found");
+      return;
+    }
 
-    if (messageField && charCount) {
-      messageField.addEventListener("input", function () {
+    // Character counter for message field
+    const messageInput = document.getElementById("message");
+    const charCount = document.getElementById("char-count");
+
+    if (messageInput && charCount) {
+      messageInput.addEventListener("input", function () {
         charCount.textContent = this.value.length;
       });
     }
 
-    var hasSubmitted = localStorage.getItem("cuemein_beta_submitted");
-    if (hasSubmitted) {
-      var alreadySignedDiv = document.getElementById("already-signed");
-      if (alreadySignedDiv) {
-        alreadySignedDiv.style.display = "block";
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      console.log("Form submission started");
+
+      // Find DOM elements
+      const submitBtn = document.getElementById("submit-btn");
+      const btnText = document.getElementById("btn-text");
+      const btnLoading = document.getElementById("btn-loading");
+      const messageDiv = document.getElementById("form-message");
+      const emailInput = document.getElementById("email");
+      const nameInput = document.getElementById("name");
+      const messageTextarea = document.getElementById("message");
+      const honeypotInput = document.querySelector('input[name="honeypot"]');
+
+      // Check essential elements exist
+      if (!submitBtn || !emailInput) {
+        console.error("Essential form elements not found");
+        return;
       }
-    }
 
-    if (form) {
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+      // Change button state
+      submitBtn.disabled = true;
+      if (btnText) btnText.style.display = "none";
+      if (btnLoading) btnLoading.style.display = "inline-flex";
+      if (messageDiv) {
+        messageDiv.style.display = "none";
+        messageDiv.innerHTML = "";
+      }
 
-        if (submitBtn.disabled) return;
+      // Collect form data - this is the key fix!
+      const formData = {
+        email: emailInput.value.trim(),
+        name: nameInput ? nameInput.value.trim() : "",
+        message: messageTextarea ? messageTextarea.value.trim() : "",
+        honeypot: honeypotInput ? honeypotInput.value : "", // spam prevention
+      };
 
-        setLoadingState(true);
-        clearMessages();
+      console.log("Collected data:", {
+        email: formData.email,
+        name: formData.name ? "provided" : "empty",
+        messageLength: formData.message.length,
+        hasHoneypot: !!formData.honeypot,
+      });
 
-        var formData = new FormData(form);
-        var data = {
-          email: formData.get("email").trim(),
-          name: formData.get("name").trim(),
-          message: formData.get("message").trim(),
-          honeypot: formData.get("honeypot"),
-        };
-
-        if (!validateForm(data)) {
-          setLoadingState(false);
-          return;
+      // Basic validation
+      if (!formData.email || !formData.email.includes("@")) {
+        if (messageDiv) {
+          messageDiv.innerHTML = `
+          <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
+            ❌ Please enter a valid email address.
+          </div>
+        `;
+          messageDiv.style.display = "block";
         }
+        // Restore button state
+        submitBtn.disabled = false;
+        if (btnText) btnText.style.display = "inline";
+        if (btnLoading) btnLoading.style.display = "none";
+        return;
+      }
 
-        fetch("/api/submit-form", {
+      // Check for spam (honeypot filled)
+      if (formData.honeypot) {
+        console.log("Spam detected - honeypot filled");
+        // Silently fail for spam
+        submitBtn.disabled = false;
+        if (btnText) btnText.style.display = "inline";
+        if (btnLoading) btnLoading.style.display = "none";
+        return;
+      }
+
+      try {
+        console.log("Starting API request...");
+
+        const response = await fetch("/api/submit-form", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
-        })
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (result) {
-            showSuccess(
-              "Beta application completed! We will be in touch soon."
-            );
-            form.reset();
-            if (charCount) charCount.textContent = "0";
-            localStorage.setItem("cuemein_beta_submitted", "true");
+          body: JSON.stringify(formData),
+        });
 
-            setTimeout(function () {
-              showInfo(
-                "We will send you exclusive updates as we approach launch!"
-              );
-            }, 3000);
-          })
-          .catch(function (error) {
-            console.error("Submission error:", error);
-            showError(
-              "Network error. Please check your connection and try again."
-            );
-          })
-          .finally(function () {
-            setLoadingState(false);
-          });
-      });
-    }
+        console.log("Response status:", response.status);
+        console.log("Response headers:", [...response.headers.entries()]);
 
-    function validateForm(data) {
-      clearFieldErrors();
-      var isValid = true;
+        // Check response text first
+        const responseText = await response.text();
+        console.log(
+          "Raw response (first 200 chars):",
+          responseText.substring(0, 200)
+        );
 
-      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!data.email || !emailRegex.test(data.email)) {
-        showFieldError("email-error", "Please enter a valid email address");
-        isValid = false;
+        // Attempt JSON parsing
+        let result;
+        try {
+          result = JSON.parse(responseText);
+          console.log("Parsed JSON:", result);
+        } catch (parseError) {
+          console.error("JSON parsing failed:", parseError);
+          console.log(
+            "Response might be HTML:",
+            responseText.includes("<html>")
+          );
+          throw new Error(
+            "Server response format error. Please contact support."
+          );
+        }
+
+        if (response.ok && result.success) {
+          if (messageDiv) {
+            messageDiv.innerHTML = `
+            <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; border: 1px solid #c3e6cb;">
+              ✅ ${result.message || "Thank you! We'll be in touch soon."}
+            </div>
+          `;
+            messageDiv.style.display = "block";
+          }
+          // Reset form
+          form.reset();
+          if (charCount) charCount.textContent = "0";
+          console.log("Form submission successful!");
+        } else {
+          throw new Error(result.error || `Server error (${response.status})`);
+        }
+      } catch (error) {
+        console.error("Submission error details:", error);
+        if (messageDiv) {
+          messageDiv.innerHTML = `
+          <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; border: 1px solid #f5c6cb;">
+            ❌ Error: ${error.message}
+            <br><small>Please try again in a moment.</small>
+          </div>
+        `;
+          messageDiv.style.display = "block";
+        }
+      } finally {
+        // Restore button state
+        submitBtn.disabled = false;
+        if (btnText) btnText.style.display = "inline";
+        if (btnLoading) btnLoading.style.display = "none";
+        console.log("Form processing complete");
       }
+    });
 
-      if (data.honeypot) {
-        showError("Spam detected. Please try again.");
-        isValid = false;
-      }
-
-      return isValid;
-    }
-
-    function setLoadingState(loading) {
-      submitBtn.disabled = loading;
-      if (btnText) btnText.style.display = loading ? "none" : "inline";
-      if (btnLoading)
-        btnLoading.style.display = loading ? "inline-flex" : "none";
-    }
-
-    function showSuccess(message) {
-      showMessage(message, "success");
-    }
-
-    function showError(message) {
-      showMessage(message, "error");
-    }
-
-    function showInfo(message) {
-      showMessage(message, "info");
-    }
-
-    function showMessage(text, type) {
-      if (messageDiv) {
-        messageDiv.textContent = text;
-        messageDiv.className = "form-message " + type;
-        messageDiv.style.display = "block";
-      }
-    }
-
-    function clearMessages() {
-      if (messageDiv) {
-        messageDiv.style.display = "none";
-      }
-    }
-
-    function showFieldError(fieldId, message) {
-      var errorDiv = document.getElementById(fieldId);
-      if (errorDiv) {
-        errorDiv.textContent = message;
-        errorDiv.style.display = "block";
-      }
-    }
-
-    function clearFieldErrors() {
-      var errorDivs = document.querySelectorAll(".field-error");
-      for (var i = 0; i < errorDivs.length; i++) {
-        errorDivs[i].style.display = "none";
-      }
-    }
+    console.log("Beta form event listener registered successfully");
   });
 </script>
 

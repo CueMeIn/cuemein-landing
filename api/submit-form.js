@@ -2,8 +2,8 @@
 import { Resend } from "resend";
 
 export default async function handler(req, res) {
-  // 상세한 로깅을 위한 시작 로그
-  console.log("Form submission received:", {
+  // 폼 제출 수신 로그
+  console.log("폼 제출 수신:", {
     method: req.method,
     hasApiKey: !!process.env.RESEND_API_KEY,
     bodyKeys: Object.keys(req.body || {}),
@@ -51,11 +51,13 @@ export default async function handler(req, res) {
     console.log("API key found, length:", apiKey.length);
 
     // 요청 데이터 파싱 및 검증
-    const { email, message } = req.body || {};
+    const { email, name, message, honeypot } = req.body || {};
     console.log("Parsed request data:", {
       hasEmail: !!email,
       emailValid: email?.includes("@"),
+      hasName: !!name,
       messageLength: message?.length || 0,
+      honeypotValue: honeypot,
     });
 
     // 입력 검증
@@ -93,6 +95,7 @@ export default async function handler(req, res) {
 
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p><strong>📧 Email:</strong> <code style="background: white; padding: 2px 6px; border-radius: 3px;">${email}</code></p>
+            ${name ? `<p><strong>👤 Name:</strong> ${name}</p>` : ""}
 
             <p><strong>💬 Message:</strong></p>
             <div style="background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #4CAF50;">
@@ -144,7 +147,7 @@ export default async function handler(req, res) {
     // 성공 응답
     return res.status(200).json({
       success: true,
-      message: "Thank you! We'll be in touch soon. 🎉",
+      message: "감사합니다! 곧 연락드리겠습니다. 🎉",
       emailId: emailResult.data?.id,
     });
   } catch (error) {
