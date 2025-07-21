@@ -3,10 +3,5 @@
     "env": {
       "HUGO_VERSION": "0.128.0"
     }
-  },
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "vercel-node@4.0.0"
-    }
   }
 }
