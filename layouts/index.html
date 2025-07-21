@@ -1,5 +1,5 @@
-<!-- c:\dev\asd\cuemein-hugo\layouts\index.html -->
-{{ define "main" }} {{ $landing := .Site.Data.landing }}
+{{/* Hugo Template: index.html */}} {{ define "main" }} {{ $landing :=
+.Site.Data.landing }}
 
 <!-- Hero Section -->
 <section class="hero">
@@ -110,11 +110,11 @@
   </div>
 </section>
 
-<!-- Beta Signup Section (NEW VERCEL COMPATIBLE FORM) -->
+<!-- Beta Signup Section -->
 <section id="beta-signup" class="beta-signup">
   <div class="container">
     <div class="section-header">
-      <h2>🚀 Join Our Beta Program</h2>
+      <h2>Join Our Beta Program</h2>
       <p>
         Be among the first to experience CueMeIn's revolutionary workplace
         training platform
@@ -122,7 +122,6 @@
     </div>
 
     <form id="beta-signup-form" class="beta-form">
-      <!-- Honeypot spam protection -->
       <input
         type="text"
         name="honeypot"
@@ -170,137 +169,112 @@
       </div>
 
       <button type="submit" class="button beta-submit-btn" id="submit-btn">
-        <span id="btn-text">🎯 Join Beta Program</span>
+        <span id="btn-text">Join Beta Program</span>
         <span id="btn-loading" style="display: none">
           <span class="spinner"></span> Submitting...
         </span>
       </button>
     </form>
 
-    <!-- Result messages -->
     <div id="form-message" class="form-message" style="display: none"></div>
-
-    <!-- Already signed up message -->
     <div id="already-signed" style="display: none" class="info-message">
-      <p>✅ Already signed up? Check your email for updates!</p>
+      <p>Already signed up? Check your email for updates!</p>
     </div>
   </div>
 </section>
 
-<!-- JavaScript for form handling -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("beta-signup-form");
-    const submitBtn = document.getElementById("submit-btn");
-    const btnText = document.getElementById("btn-text");
-    const btnLoading = document.getElementById("btn-loading");
-    const messageDiv = document.getElementById("form-message");
-    const charCount = document.getElementById("char-count");
-    const messageField = document.getElementById("message");
+    var form = document.getElementById("beta-signup-form");
+    var submitBtn = document.getElementById("submit-btn");
+    var btnText = document.getElementById("btn-text");
+    var btnLoading = document.getElementById("btn-loading");
+    var messageDiv = document.getElementById("form-message");
+    var charCount = document.getElementById("char-count");
+    var messageField = document.getElementById("message");
 
-    // Character counter
     if (messageField && charCount) {
       messageField.addEventListener("input", function () {
         charCount.textContent = this.value.length;
       });
     }
 
-    // Check if already submitted
-    const hasSubmitted = localStorage.getItem("cuemein_beta_submitted");
+    var hasSubmitted = localStorage.getItem("cuemein_beta_submitted");
     if (hasSubmitted) {
-      const alreadySignedDiv = document.getElementById("already-signed");
+      var alreadySignedDiv = document.getElementById("already-signed");
       if (alreadySignedDiv) {
         alreadySignedDiv.style.display = "block";
       }
     }
 
     if (form) {
-      form.addEventListener("submit", async function (e) {
+      form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        // Prevent double submission
         if (submitBtn.disabled) return;
 
-        // Set loading state
         setLoadingState(true);
         clearMessages();
 
-        // Collect form data
-        const formData = new FormData(form);
-        const data = {
+        var formData = new FormData(form);
+        var data = {
           email: formData.get("email").trim(),
           name: formData.get("name").trim(),
           message: formData.get("message").trim(),
           honeypot: formData.get("honeypot"),
         };
 
-        // Client-side validation
         if (!validateForm(data)) {
           setLoadingState(false);
           return;
         }
 
-        try {
-          const response = await fetch("/api/submit-form", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
-
-          const result = await response.json();
-
-          if (response.ok) {
-            showSuccess(result.message);
+        fetch("/api/submit-form", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (result) {
+            showSuccess(
+              "Beta application completed! We will be in touch soon."
+            );
             form.reset();
             if (charCount) charCount.textContent = "0";
-
-            // Mark as submitted
             localStorage.setItem("cuemein_beta_submitted", "true");
 
-            // Track success event
-            if (typeof gtag !== "undefined") {
-              gtag("event", "beta_signup_success", {
-                event_category: "engagement",
-                event_label: "form_submission",
-              });
-            }
-
-            // Show thank you message after 3 seconds
-            setTimeout(() => {
+            setTimeout(function () {
               showInfo(
-                "🌟 We'll send you exclusive updates as we approach launch!"
+                "We will send you exclusive updates as we approach launch!"
               );
             }, 3000);
-          } else {
+          })
+          .catch(function (error) {
+            console.error("Submission error:", error);
             showError(
-              result.error || "Something went wrong. Please try again."
+              "Network error. Please check your connection and try again."
             );
-          }
-        } catch (error) {
-          console.error("Submission error:", error);
-          showError(
-            "Network error. Please check your connection and try again."
-          );
-        }
-
-        setLoadingState(false);
+          })
+          .finally(function () {
+            setLoadingState(false);
+          });
       });
     }
 
     function validateForm(data) {
       clearFieldErrors();
-      let isValid = true;
+      var isValid = true;
 
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!data.email || !emailRegex.test(data.email)) {
         showFieldError("email-error", "Please enter a valid email address");
         isValid = false;
       }
 
-      // Spam check
       if (data.honeypot) {
         showError("Spam detected. Please try again.");
         isValid = false;
@@ -331,9 +305,8 @@
     function showMessage(text, type) {
       if (messageDiv) {
         messageDiv.textContent = text;
-        messageDiv.className = `form-message ${type}`;
+        messageDiv.className = "form-message " + type;
         messageDiv.style.display = "block";
-        messageDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }
 
@@ -344,7 +317,7 @@
     }
 
     function showFieldError(fieldId, message) {
-      const errorDiv = document.getElementById(fieldId);
+      var errorDiv = document.getElementById(fieldId);
       if (errorDiv) {
         errorDiv.textContent = message;
         errorDiv.style.display = "block";
@@ -352,14 +325,14 @@
     }
 
     function clearFieldErrors() {
-      document.querySelectorAll(".field-error").forEach((el) => {
-        el.style.display = "none";
-      });
+      var errorDivs = document.querySelectorAll(".field-error");
+      for (var i = 0; i < errorDivs.length; i++) {
+        errorDivs[i].style.display = "none";
+      }
     }
   });
 </script>
 
-<!-- Additional CSS for new form -->
 <style>
   .beta-signup {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -412,7 +385,7 @@
   }
 
   .beta-submit-btn {
-    width: 100%;
+    width: 100% !important;
     background: linear-gradient(135deg, #0ea5e9, #38bdf8) !important;
     color: white !important;
     border: none !important;
@@ -424,15 +397,9 @@
     transition: transform 0.2s, box-shadow 0.2s;
   }
 
-  .beta-submit-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
-  }
-
   .beta-submit-btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-    transform: none;
   }
 
   #btn-loading {
@@ -497,17 +464,6 @@
     border-radius: 8px;
     text-align: center;
     margin-top: 1rem;
-  }
-
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .beta-signup {
-      padding: 2rem 1rem;
-    }
-
-    .beta-form {
-      padding: 1.5rem;
-    }
   }
 </style>
 
