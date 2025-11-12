@@ -87,7 +87,7 @@ module.exports = async function handler(req, res) {
 
     // Prepare email data
     const emailData = {
-      from: "CueMeIn Beta <noreply@cuemein.app>",
+      from: "CueMeIn Beta <onboarding@resend.dev>",
       to: ["beta@cuemein.com.au"],
       subject: `🎯 New Beta Signup: ${email}`,
       html: `
