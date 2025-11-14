@@ -105,6 +105,16 @@ export async function onRequestPost(context) {
     </div>
   `;
 
+  // TODO: Fix Resend API issue later
+  log("DEBUG: Email sending disabled temporarily", { email, name, message });
+  
+  return jsonResponse({
+    success: true,
+    message: "Thank you! We'll be in touch soon. 🎉 (Beta signup recorded)",
+    debug: { email, name, hasApiKey: !!apiKey }
+  });
+
+  /* Original email code (commented out for debugging)
   try {
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -163,4 +173,4 @@ export async function onRequestPost(context) {
       500
     );
   }
-}
+  */
