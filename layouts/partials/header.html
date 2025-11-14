@@ -1,11 +1,24 @@
-<header>
+<header class="site-header">
     <div class="container nav-container">
         <a href="{{ .Site.BaseURL }}" class="logo">
             <img src="{{ "images/favicons/android-chrome-192x192.png" | relURL }}" alt="CueMeIn Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
             <span class="logo-text">CueMeIn</span>
         </a>
-        <nav style="display: none;">
-            <!-- Navigation will be added later if needed -->
+        <nav class="main-nav">
+            <ul class="nav-menu">
+                {{ range .Site.Menus.main }}
+                    <li class="nav-item">
+                        <a href="{{ .URL }}" class="nav-link" {{ if strings.HasPrefix .URL "https://" }}target="_blank"{{ end }}>
+                            {{ .Name }}
+                        </a>
+                    </li>
+                {{ end }}
+            </ul>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </div>
 </header>

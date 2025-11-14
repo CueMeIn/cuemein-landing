@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     init3DCommunicationBubbles();
 
     // Header scroll effect
-    const header = document.querySelector('header');
+    const header = document.querySelector('.site-header');
     if (header) {
         window.addEventListener('scroll', function() {
             if (window.scrollY > 100) {

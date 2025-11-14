@@ -13,3 +13,21 @@ title = 'CueMeIn - Workplace Skills for Neurodivergent Professionals'
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Blog"
+    url = "/posts/"
+    weight = 2
+  [[menu.main]]
+    name = "Try CueMeIn"
+    url = "https://cuemein.streamlit.app"
+    weight = 3

@@ -1,0 +1,60 @@
+{{ define "main" }}
+<main class="post-main">
+  <div class="container">
+    <article class="post">
+      <header class="post-header">
+        <div class="post-meta">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+          {{ if .Params.categories }}
+            <div class="post-categories">
+              {{ range .Params.categories }}
+                <span class="category">{{ . }}</span>
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+        <h1 class="post-title">{{ .Title }}</h1>
+        {{ if .Params.summary }}
+          <p class="post-summary">{{ .Params.summary }}</p>
+        {{ end }}
+        {{ if .Params.tags }}
+          <div class="post-tags">
+            {{ range .Params.tags }}
+              <span class="tag">#{{ . }}</span>
+            {{ end }}
+          </div>
+        {{ end }}
+      </header>
+      
+      <div class="post-content">
+        {{ .Content }}
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-cta">
+          <div class="cta-content">
+            <h3>Ready to Develop Your Workplace Skills?</h3>
+            <p>This article is just the beginning. CueMeIn offers personalized, AI-supported training designed specifically for neurodivergent professionals. Start building the skills that will advance your career.</p>
+            <a href="https://cuemein.streamlit.app" class="cta-button" target="_blank">Try CueMeIn App</a>
+          </div>
+        </div>
+        
+        <div class="post-navigation">
+          {{ if .NextInSection }}
+            <a href="{{ .NextInSection.Permalink }}" class="nav-link nav-next">
+              <span class="nav-label">Next Article</span>
+              <span class="nav-title">{{ .NextInSection.Title }}</span>
+            </a>
+          {{ end }}
+          {{ if .PrevInSection }}
+            <a href="{{ .PrevInSection.Permalink }}" class="nav-link nav-prev">
+              <span class="nav-label">Previous Article</span>
+              <span class="nav-title">{{ .PrevInSection.Title }}</span>
+            </a>
+          {{ end }}
+        </div>
+      </footer>
+    </article>
+  </div>
+</main>
+{{ end }}

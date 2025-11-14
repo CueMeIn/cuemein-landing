@@ -6,34 +6,34 @@
     <title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
     <meta name="description" content="{{ .Description | default .Site.Params.description }}">
     <meta name="author" content="{{ .Site.Params.author }}">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ .Permalink }}">
     <meta property="og:title" content="{{ .Title | default .Site.Title }}">
     <meta property="og:description" content="{{ .Description | default .Site.Params.description }}">
     <meta property="og:site_name" content="{{ .Site.Title }}">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ .Permalink }}">
     <meta property="twitter:title" content="{{ .Title | default .Site.Title }}">
     <meta property="twitter:description" content="{{ .Description | default .Site.Params.description }}">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
+
     <!-- Favicon Package -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ "images/favicons/apple-touch-icon.png" | relURL }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ "images/favicons/favicon-32x32.png" | relURL }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ "images/favicons/favicon-16x16.png" | relURL }}">
     <link rel="manifest" href="{{ "images/favicons/site.webmanifest" | relURL }}">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Three.js ES6 Modules -->
     <script type="importmap">
     {
@@ -43,20 +43,61 @@
         }
     }
     </script>
-    
+
     <!-- CSS -->
     <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "css/navigation.css" | relURL }}">
+
+    <!-- Dynamic header height calculation -->
+    <script>
+    (function(){
+        // Prevent auto-scroll and ensure page starts at top
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        // Force scroll to top immediately
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        // Set CSS variable based on actual header height after styles load
+        window.addEventListener('DOMContentLoaded', function() {
+            // Ensure we're at the top after DOM loads
+            window.scrollTo(0, 0);
+
+            const header = document.querySelector('.site-header');
+            if (header) {
+                const actualHeight = header.offsetHeight;
+                document.documentElement.style.setProperty('--header-height', actualHeight + 'px');
+                console.log('Dynamic header height set to:', actualHeight + 'px');
+            }
+        });
+
+        // Additional safety check after page load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                console.log('Forced scroll to top after page load');
+            }, 100);
+        });
+    })();
+    </script>
 </head>
 <body>
     {{ partial "header.html" . }}
-    
-    <main>
+
+    <!-- Use a non-<main> wrapper here to avoid nested <main> elements when
+         page templates (like posts/single.html) define their own <main>.
+         This prevents invalid HTML and layout/rendering inconsistencies. -->
+    <div id="site-main">
         {{ block "main" . }}{{ end }}
-    </main>
-    
+    </div>
+
     {{ partial "footer.html" . }}
-    
+
     <!-- JavaScript -->
     <script type="module" src="{{ "js/main.js" | relURL }}"></script>
+    <script src="{{ "js/navigation.js" | relURL }}"></script>
 </body>
 </html>
