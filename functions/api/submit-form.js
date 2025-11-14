@@ -143,7 +143,7 @@ export async function onRequestPost(context) {
         result?.error?.message ||
         result?.error ||
         "Email service error, please try again.";
-      throw new Error(message);
+      // throw new Error(message);  // Commented out temporarily
     }
 
     return jsonResponse({
